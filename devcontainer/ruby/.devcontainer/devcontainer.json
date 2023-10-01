@@ -1,0 +1,23 @@
+{
+    "name": "Ruby",
+    "image": "ruby:3.0.2",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+				"vscodevim.vim",
+				"formulahendry.code-runner",
+				"Shopify.ruby-lsp",
+				"Shopify.ruby-extensions-pack",
+				"KoichiSasada.vscode-rdbg",
+				"sorbet.sorbet-vscode-extension"
+			],
+            "settings": {
+                "[ruby]":{ 
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "Shopify.ruby-lsp"
+                }
+            }
+        }
+    },
+    "postCreateCommand": "gem install rubocop && bundle install"
+}
