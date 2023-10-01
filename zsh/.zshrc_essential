@@ -1,0 +1,54 @@
+# 言語設定
+export LANG=ja_JP.UTF-8
+
+# ヒストリ設定
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+
+# 直前のコマンドの重複を削除
+setopt hist_ignore_dups
+# 同じコマンドをヒストリに残さない
+setopt hist_ignore_all_dups
+# 同時に起動したzsh間でヒストリを共有
+setopt share_history
+# コマンドのスペルミスを修正
+setopt correct
+# ビープ音を消す
+setopt no_beep
+
+# gitを使ったブランチなどの表示
+autoload -Uz vcs_info
+setopt prompt_subst
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "%F{magenta}!"
+zstyle ':vcs_info:git:*' unstagedstr "%F{yellow}+"
+zstyle ':vcs_info:*' formats "%F{cyan}%c%u[%b]%f"
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+precmd () { vcs_info }
+
+# プロンプトの表示設定
+PROMPT='[%B%F{red}%n@%m%f%b:%F{green}%~%f]%F{cyan}$vcs_info_msg_0_%f
+%F{yellow}$%f '
+
+# peco + ghq shortcut
+bindkey '^]' peco-src
+function peco-src() {
+    local src=$(ghq list --full-path | peco --query "$LBUFFER")
+    if [ -n "$src" ]; then
+        BUFFER="cd $src"
+        zle accept-line
+    fi
+    zle -R -c
+}
+zle -N peco-src
+
+# run github actions locally
+alias act='act --container-architecture linux/amd64'
+
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# copilot cli
+# this must be on the bottom of this file
+eval "$(github-copilot-cli alias -- "$0")"
