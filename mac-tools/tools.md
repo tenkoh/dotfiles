@@ -1,0 +1,3 @@
+- Volta: node version manager
+- Github copilot cli: [Warning] install after Volta
+- act: run github actions locally
